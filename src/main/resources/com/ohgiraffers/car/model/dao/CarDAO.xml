@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ohgiraffers.car.model.dao.CarDAO">
+
+    <resultMap type="CarDTO" id="carResultMap">
+        <id property="carCode" column="car_code"/>
+        <result property="carCompany" column="car_company"/>
+        <result property="carName" column="car_name"/>
+        <result property="carNumber" column="car_number"/>
+    </resultMap>
+
+    <select id="selectAllcarList" resultMap="carResultMap">
+        SELECT
+            car_code,
+            car_company,
+            car_name,
+            car_number
+        FROM
+            car
+        ORDER BY
+            car_code
+    </select>
+
+    <select id="selectCarByCondition"  resultMap="carResultMap">
+        SELECT
+            car_code,
+            car_company,
+            car_name,
+            car_number
+        FROM
+            car
+        <where>
+            <choose>
+                <when test="option != null and option eq 'carCompany'">
+                    car_company LIKE CONCAT('%', #{ value }, '%')
+                </when>
+            </choose>
+        </where>
+    </select>
+
+    <insert id="insertCar" parameterType="CarDTO">
+        INSERT INTO car (car_company, car_name, car_number)
+        VALUES ( #{carCompany}, #{carName}, #{carNumber} )
+    </insert>
+
+    <update id="updateCar" parameterType="CarDTO">
+        UPDATE car
+        <set>
+            <if test="carCompany != null and carCompany neq 'SKIP'">
+                car_company = #{ carCompany},
+            </if>
+            <if test="carName != null and carName neq 'SKIP'">
+                car_name = #{ carName},
+            </if>
+            <if test="carNumber != null and carNumber neq 'SKIP' ">
+                car_number = #{ carNumber}
+            </if>
+        </set>
+        WHERE car_code = #{carCode}
+    </update>
+
+    <delete id="deleteCar" parameterType="hashMap">
+        DELETE
+        FROM car
+        WHERE car_code = #{carCode}
+    </delete>
+
+
+</mapper>

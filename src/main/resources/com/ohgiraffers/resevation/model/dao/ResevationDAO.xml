@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ohgiraffers.resevation.model.dao.ResevationDAO">
+
+    <resultMap type="ReservationDTO" id="reservationresultMap">
+        <id property="memberCode" column="member_code"/>
+        <result property="carCode" column="car_code"/>
+    </resultMap>
+
+    <select id="selectAllResevationList" resultMap="reservationresultMap">
+        SELECT *
+        FROM car
+                 JOIN member ON car.car_code = member.member_code;
+    </select>
+
+<!--    <delete id="deleteCar" parameterType="hashMap">-->
+<!--        DELETE-->
+<!--        FROM member_reservation-->
+<!--    </delete>-->
+</mapper>

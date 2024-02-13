@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ohgiraffers.member.model.dao.MemberDAO">
+
+    <resultMap type="MemberDTO" id="memberResultMap">
+        <id property="memberCode" column="member_code"/>
+        <result property="memberName" column="member_name"/>
+        <result property="memberAge" column="meber_age"/>
+        <result property="memberGender" column="meber_gender"/>
+        <result property="memberCitizen" column="member_citizen"/>
+        <result property="memberAd" column="member_ad"/>
+    </resultMap>
+
+    <select id="selectMemberCheck" resultMap="memberResultMap">
+     SELECT
+         *
+     FROM
+        member
+    <where>
+
+            <if test="option != null and option eq 'memberName'">
+                member_name LIKE CONCAT('%', #{ value }, '%')
+            </if>
+
+    </where>
+    </select>
+
+    <insert id="inserMember" parameterType="MemberDTO">
+        INSERT INTO member (member_name, member_age, member_gender, member_citizen, member_ad)
+         VALUES ( #{memberName}, #{memberAge},#{memberGender},#{memberCitizen},#{memberAd})
+    </insert>
+
+<!--    <update id="updateMember" parameterType="MemberDTO">-->
+<!--        UPDATE member-->
+<!--        <set>-->
+<!--            <if test="memberName != null and memberName neq 'SKIP'">,-->
+<!--                member_name = #{memberName}-->
+<!--            </if>-->
+<!--            <if test="memberAge != null and memberAge neq -1">-->
+<!--                member_age = #{memberAge}-->
+<!--            </if>-->
+
+<!--            <if test="memberGender != null and memberGender neq 'SKIP'">,-->
+<!--                member_gender = #{memberGender}-->
+<!--            </if>-->
+<!--            <if test="memberCitizen != null and memberCitizen neq 'SKIP'">,-->
+<!--                member_citizen = #{memberCitizen}-->
+<!--            </if>-->
+<!--            <if test="memberAd != null and memberAd neq 'SKIP'">-->
+<!--                member_ad = #{memberAd}-->
+<!--            </if>-->
+<!--        </set>-->
+<!--        WHERE member_code = #{memberCode}-->
+<!--    </update>-->
+    <delete id="deleteMember" parameterType="hashMap">
+        DELETE
+        FROM member
+        WHERE member_code = #{memberCode}
+    </delete>
+
+
+
+
+
+
+
+
+
+</mapper>
